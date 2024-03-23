@@ -3,7 +3,7 @@ A simple plugin that displays a hitmarker in the center of the screen when hitti
 
 # Installation
 Installing the plugin consists of several steps:
-1. [Download]() this plugin;
+1. [Download](https://github.com/kekekekkek/Hitmarker/archive/refs/heads/main.zip) this plugin;
 2. Go to the root folder of the game (for example `C:\Program Files (x86)\Steam\steamapps\common\Sven Co-op`) and move the `svencoop` folder there;
 3. If the operating system prompts you to replace the files, replace them;
 4. Next, go to the `..\Sven Co-op\svencoop` folder and find there the text file `default_plugins.txt`;
@@ -38,10 +38,10 @@ When you start the game and connect to your server, you will have the following 
 
 # Screenshots
 * Screenshot 1<br><br>
-![Screenshot_1]()
+![Screenshot_1](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Screenshot_1.png)
 * Screenshot 2<br><br>
-![Screenshot_2]()
+![Screenshot_2](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Screenshot_2.png)
 * Screenshot 3<br><br>
-![Screenshot_3]()
+![Screenshot_3](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Screenshot_3.png)
 * Screenshot 4<br><br>
-![Screenshot_4]()
+![Screenshot_4](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Screenshot_4.png)
