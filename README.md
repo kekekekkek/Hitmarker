@@ -37,6 +37,9 @@ When you start the game and connect to your server, you will have the following 
 **REMEMBER**: You can also draw your own hitmarker sprite and replace one of the existing files.<br>
 **REMEMBER**: The hitmarker only works when you fire a weapon or attack with a melee weapon (does not work on grenades).<br>
 
+# GIF
+![GIF1](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Hitmarker.gif)
+
 # Screenshots
 * Screenshot 1<br><br>
 ![Screenshot_1](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Screenshot_1.png)
@@ -44,5 +47,3 @@ When you start the game and connect to your server, you will have the following 
 ![Screenshot_2](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Screenshot_2.png)
 * Screenshot 3<br><br>
 ![Screenshot_3](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Screenshot_3.png)
-* Screenshot 4<br><br>
-![Screenshot_4](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Screenshot_4.png)
