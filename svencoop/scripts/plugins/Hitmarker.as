@@ -61,7 +61,7 @@ void MapInit()
 void PluginInit()
 {
 	g_Module.ScriptInfo.SetAuthor("kek");
-	g_Module.ScriptInfo.SetContactInfo("-");
+	g_Module.ScriptInfo.SetContactInfo("https://github.com/kekekekkek/Hitmarker");
 	
 	g_Hooks.RegisterHook(Hooks::Player::ClientSay, @ClientSay);
 	g_Hooks.RegisterHook(Hooks::Player::ClientDisconnect, @ClientDisconnect);
