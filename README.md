@@ -35,6 +35,7 @@ When you start the game and connect to your server, you will have the following 
 **REMEMBER**: If you set the color of the hitmarker to black, then it simply will not be displayed on your screen.<br>
 **REMEMBER**: Also, setting the `alpha channel` for the hitmarker to `0` will disable it.<br>
 **REMEMBER**: You can also draw your own hitmarker sprite and replace one of the existing files.<br>
+**REMEMBER**: The hitmarker only works when you fire a weapon or attack with a melee weapon (does not work on grenades).<br>
 
 # Screenshots
 * Screenshot 1<br><br>
