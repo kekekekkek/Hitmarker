@@ -26,6 +26,10 @@ class CHitmarker
 	//Пока что без KillSound
 	int iKillSnd = 0;
 	
+	float fScreenFadeTime = 0.3f;
+	float fScreenFadeHoldTime = 0.3f;
+	CColor cScreenFadeColor(25, 0, 205, 55);
+	
 	float fHoldTime = 0.3f;
 	float fFadeOutTime = 0.1f;
 	
@@ -41,6 +45,9 @@ class CHitmarker
 		iKillSnd = 0;
 		fHoldTime = 0.3;
 		fFadeOutTime = 0.1;
+		fScreenFadeTime = 0.3f;
+		fScreenFadeHoldTime = 0.3f;
+		cScreenFadeColor = CColor(25, 0, 205, 55);
 		cHitColor = CColor(255, 255, 255, 125);
 		cKillColor = CColor(255, 0, 0, 125);
 		@pPlayer = null;
@@ -151,6 +158,9 @@ void MonsterTakeDamage(CBasePlayer@ pPlayer, CHitmarker lHitmarker, CHitmarkerPa
 							? CColor(lHitmarker.cKillColor.iRed, lHitmarker.cKillColor.iGreen, lHitmarker.cKillColor.iBlue, lHitmarker.cKillColor.iAlpha) 
 							: CColor(lHitmarker.cHitColor.iRed, lHitmarker.cHitColor.iGreen, lHitmarker.cHitColor.iBlue, lHitmarker.cHitColor.iAlpha)), "hitmarker/hitmarker" + lHitmarker.iSize + ".spr");
 						g_SoundSystem.EmitSound(pPlayer.edict(), CHAN_AUTO, "hitmarker/hitsound/hitsound" + lHitmarker.iHitSnd + ".wav", 1.0f, ATTN_STATIC);
+						
+						if (pEdict.vars.deadflag == DEAD_DYING)
+							g_PlayerFuncs.ScreenFade(pPlayer, Vector(lHitmarker.cScreenFadeColor.iRed, lHitmarker.cScreenFadeColor.iGreen, lHitmarker.cScreenFadeColor.iBlue), lHitmarker.fScreenFadeTime, lHitmarker.fScreenFadeHoldTime, lHitmarker.cScreenFadeColor.iAlpha, 0);
 
 						//Вроде бы процесс игры не ломает (хотя при большом количестве игроков просаживает fps)
 						g_EntityFuncs.DispatchKeyValue(pEdict, "dmg_take", "0");				
@@ -172,6 +182,9 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 		"hm_ksnd",
 		"hm_holdtime",
 		"hm_fadetime",
+		"hm_screenfadetime",
+		"hm_screenholdtime",
+		"hm_screencolor",
 		"hm_hcolor",
 		"hm_kcolor",
 		"hm_ao",
@@ -185,6 +198,9 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 		"[HMInfo]: Usage: .hm_ksnd or /hm_ksnd or !hm_ksnd <sound>. Example: !hm_ksnd 2 (Currently not working)\n",
 		"[HMInfo]: Usage: .hm_holdtime or /hm_holdtime or !hm_holdtime <time>. Example: !hm_holdtime 0.3\n",
 		"[HMInfo]: Usage: .hm_fadetime or /hm_fadetime or !hm_fadetime <time>. Example: !hm_fadetime 0.1\n",
+		"[HMInfo]: Usage: .hm_screenfadetime or /hm_screenfadetime or !hm_screenfadetime <time>. Example: !hm_screenfadetime 0.3\n",
+		"[HMInfo]: Usage: .hm_screenholdtime or /hm_screenholdtime or !hm_screenholdtime <time>. Example: !hm_screenholdtime 0.3\n",
+		"[HMInfo]: Usage: .hm_screencolor or /hm_screencolor or !hm_screencolor <red> <green> <blue> <alpha>. Example: !hm_screencolor 25 0 205 55\n",
 		"[HMInfo]: Usage: .hm_hcolor or /hm_hcolor or !hm_hcolor <red> <green> <blue> <alpha>. Example: !hm_hcolor 255 255 255 125\n",
 		"[HMInfo]: Usage: .hm_kcolor or /hm_kcolor or !hm_kcolor <red> <green> <blue> <alpha>. Example: !hm_kcolor 255 0 0 125\n",
 		"[HMInfo]: Usage: .hm_ao or /hm_ao or !hm_ao <adminsonly>. Example: !hm_ao 0\n",
@@ -218,7 +234,7 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 		{
 			if (!IsPlayerAdmin(pSayParam.GetPlayer()))
 			{
-				if (i == 0 || i == 8)
+				if (i == 0 || i == 11)
 				{
 					g_PlayerFuncs.SayText(pSayParam.GetPlayer(), "[HMError]: This command is for admins only.\n");
 					bHide = true;
@@ -307,7 +323,29 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 					}
 				}
 				
-				if (i == 8)
+				if (i == 6)
+				{
+					if (!bIsNaN)
+					{
+						g_Hitmarker[iEntIndex].fScreenFadeTime = Math.clamp(0.0f, 1.0f, atof(strArg));
+						g_PlayerFuncs.SayText(pSayParam.GetPlayer(), "[HMSuccess]: The screen fade time value has been successfully changed to \"" + g_Hitmarker[iEntIndex].fScreenFadeTime + "\"!\n");
+						
+						bHide = true;
+					}
+				}
+				
+				if (i == 7)
+				{
+					if (!bIsNaN)
+					{
+						g_Hitmarker[iEntIndex].fScreenFadeHoldTime = Math.clamp(0.0f, 1.0f, atof(strArg));
+						g_PlayerFuncs.SayText(pSayParam.GetPlayer(), "[HMSuccess]: The screen fade hold time value has been successfully changed to \"" + g_Hitmarker[iEntIndex].fScreenFadeHoldTime + "\"!\n");
+						
+						bHide = true;
+					}
+				}
+				
+				if (i == 11)
 				{
 					if (!bIsNaN)
 					{
@@ -338,7 +376,18 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 				}
 				
 				//Не ставьте черный цвет (0 0 0 255) - иначе он просто не будет отображаться
-				if (i == 6)
+				if (i == 8)
+				{
+					g_Hitmarker[iEntIndex].cScreenFadeColor.iRed = atoi(strArgs[0]);
+					g_Hitmarker[iEntIndex].cScreenFadeColor.iGreen = atoi(strArgs[1]);
+					g_Hitmarker[iEntIndex].cScreenFadeColor.iBlue = atoi(strArgs[2]);
+					g_Hitmarker[iEntIndex].cScreenFadeColor.iAlpha = atoi(strArgs[3]);
+					
+					g_PlayerFuncs.SayText(pSayParam.GetPlayer(), "[HMSuccess]: The screen fade color value has been successfully changed to \"" + strArgs[0].opAdd(" ") + strArgs[1].opAdd(" ") + strArgs[2].opAdd(" ") + strArgs[3] + "\"!\n");
+					bHide = true;
+				}
+				
+				if (i == 9)
 				{
 					g_Hitmarker[iEntIndex].cHitColor.iRed = atoi(strArgs[0]);
 					g_Hitmarker[iEntIndex].cHitColor.iGreen = atoi(strArgs[1]);
@@ -349,7 +398,7 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 					bHide = true;
 				}
 				
-				if (i == 7)
+				if (i == 10)
 				{
 					g_Hitmarker[iEntIndex].cKillColor.iRed = atoi(strArgs[0]);
 					g_Hitmarker[iEntIndex].cKillColor.iGreen = atoi(strArgs[1]);
