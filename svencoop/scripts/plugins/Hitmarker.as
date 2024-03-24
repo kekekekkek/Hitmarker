@@ -26,6 +26,9 @@ class CHitmarker
 	//Пока что без KillSound
 	int iKillSnd = 0;
 	
+	float fHoldTime = 0.3f;
+	float fFadeOutTime = 0.1f;
+	
 	CColor cHitColor(255, 255, 255, 125);
 	CColor cKillColor(255, 0, 0, 125);
 	
@@ -36,6 +39,8 @@ class CHitmarker
 		iSize = 2;
 		iHitSnd = 1;
 		iKillSnd = 0;
+		fHoldTime = 0.3;
+		fFadeOutTime = 0.1;
 		cHitColor = CColor(255, 255, 255, 125);
 		cKillColor = CColor(255, 0, 0, 125);
 		@pPlayer = null;
@@ -102,14 +107,14 @@ bool IsNaN(string strValue)
 	return false;
 }
 
-void DrawHitmarker(CBasePlayer@ pPlayer, CColor cColor, string strFileName)
+void DrawHitmarker(CBasePlayer@ pPlayer, float fHoldTime, float fFadeOutTime, CColor cColor, string strFileName)
 {
 	HUDSpriteParams pHudSpriteParams;
 	
 	pHudSpriteParams.x = 0;
 	pHudSpriteParams.y = 0;
-	pHudSpriteParams.holdTime = 0.3;
-	pHudSpriteParams.fadeoutTime = 0.1;
+	pHudSpriteParams.holdTime = fHoldTime;
+	pHudSpriteParams.fadeoutTime = fFadeOutTime;
 	pHudSpriteParams.spritename = strFileName;
 	pHudSpriteParams.color1 = RGBA(cColor.iRed, cColor.iGreen, cColor.iBlue, cColor.iAlpha);
 	pHudSpriteParams.flags = (HUD_ELEM_ABSOLUTE_Y | HUD_ELEM_SCR_CENTER_Y | HUD_ELEM_SCR_CENTER_X);
@@ -142,7 +147,7 @@ void MonsterTakeDamage(CBasePlayer@ pPlayer, CHitmarker lHitmarker, CHitmarkerPa
 				{
 					if (pEdict.vars.dmg_take > 0.0f)
 					{
-						DrawHitmarker(pPlayer, (pEdict.vars.health <= 1 
+						DrawHitmarker(pPlayer, lHitmarker.fHoldTime, lHitmarker.fFadeOutTime, (pEdict.vars.health <= 1 
 							? CColor(lHitmarker.cKillColor.iRed, lHitmarker.cKillColor.iGreen, lHitmarker.cKillColor.iBlue, lHitmarker.cKillColor.iAlpha) 
 							: CColor(lHitmarker.cHitColor.iRed, lHitmarker.cHitColor.iGreen, lHitmarker.cHitColor.iBlue, lHitmarker.cHitColor.iAlpha)), "hitmarker/hitmarker" + lHitmarker.iSize + ".spr");
 						g_SoundSystem.EmitSound(pPlayer.edict(), CHAN_AUTO, "hitmarker/hitsound/hitsound" + lHitmarker.iHitSnd + ".wav", 1.0f, ATTN_STATIC);
@@ -165,6 +170,8 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 		"hm_size", 
 		"hm_hsnd",
 		"hm_ksnd",
+		"hm_holdtime",
+		"hm_fadetime",
 		"hm_hcolor",
 		"hm_kcolor",
 		"hm_ao",
@@ -176,6 +183,8 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 		"[HMInfo]: Usage: .hm_size or /hm_size or !hm_size <size>. Example: !hm_size 2\n",
 		"[HMInfo]: Usage: .hm_hsnd or /hm_hsnd or !hm_hsnd <sound>. Example: !hm_hsnd 1\n",
 		"[HMInfo]: Usage: .hm_ksnd or /hm_ksnd or !hm_ksnd <sound>. Example: !hm_ksnd 2 (Currently not working)\n",
+		"[HMInfo]: Usage: .hm_holdtime or /hm_holdtime or !hm_holdtime <time>. Example: !hm_holdtime 0.3\n",
+		"[HMInfo]: Usage: .hm_fadetime or /hm_fadetime or !hm_fadetime <time>. Example: !hm_fadetime 0.1\n",
 		"[HMInfo]: Usage: .hm_hcolor or /hm_hcolor or !hm_hcolor <red> <green> <blue> <alpha>. Example: !hm_hcolor 255 255 255 125\n",
 		"[HMInfo]: Usage: .hm_kcolor or /hm_kcolor or !hm_kcolor <red> <green> <blue> <alpha>. Example: !hm_kcolor 255 0 0 125\n",
 		"[HMInfo]: Usage: .hm_ao or /hm_ao or !hm_ao <adminsonly>. Example: !hm_ao 0\n",
@@ -209,7 +218,7 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 		{
 			if (!IsPlayerAdmin(pSayParam.GetPlayer()))
 			{
-				if (i == 0 || i == 6)
+				if (i == 0 || i == 8)
 				{
 					g_PlayerFuncs.SayText(pSayParam.GetPlayer(), "[HMError]: This command is for admins only.\n");
 					bHide = true;
@@ -276,7 +285,29 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 					}
 				}
 				
-				if (i == 6)
+				if (i == 4)
+				{
+					if (!bIsNaN)
+					{
+						g_Hitmarker[iEntIndex].fHoldTime = Math.clamp(0.0f, 1.0f, atof(strArg));
+						g_PlayerFuncs.SayText(pSayParam.GetPlayer(), "[HMSuccess]: The hitmarker hold time value has been successfully changed to \"" + g_Hitmarker[iEntIndex].fHoldTime + "\"!\n");
+						
+						bHide = true;
+					}
+				}
+				
+				if (i == 5)
+				{
+					if (!bIsNaN)
+					{
+						g_Hitmarker[iEntIndex].fFadeOutTime = Math.clamp(0.0f, 1.0f, atof(strArg));
+						g_PlayerFuncs.SayText(pSayParam.GetPlayer(), "[HMSuccess]: The hitmarker fade time value has been successfully changed to \"" + g_Hitmarker[iEntIndex].fFadeOutTime + "\"!\n");
+						
+						bHide = true;
+					}
+				}
+				
+				if (i == 8)
 				{
 					if (!bIsNaN)
 					{
@@ -307,7 +338,7 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 				}
 				
 				//Не ставьте черный цвет (0 0 0 255) - иначе он просто не будет отображаться
-				if (i == 4)
+				if (i == 6)
 				{
 					g_Hitmarker[iEntIndex].cHitColor.iRed = atoi(strArgs[0]);
 					g_Hitmarker[iEntIndex].cHitColor.iGreen = atoi(strArgs[1]);
@@ -318,7 +349,7 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 					bHide = true;
 				}
 				
-				if (i == 5)
+				if (i == 7)
 				{
 					g_Hitmarker[iEntIndex].cKillColor.iRed = atoi(strArgs[0]);
 					g_Hitmarker[iEntIndex].cKillColor.iGreen = atoi(strArgs[1]);
