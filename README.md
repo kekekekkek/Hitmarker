@@ -27,6 +27,9 @@ When you start the game and connect to your server, you will have the following 
 | `.hm_ksnd`, `/hm_ksnd` or `!hm_ksnd` | `0` | `2` | `0` | Allows you to change the sound when killing an enemy.<br>`Currently not working.` | Usage: `.hm_ksnd or /hm_ksnd or !hm_ksnd <sound>.` Example: `!hm_ksnd 2` |
 | `.hm_holdtime`, `/hm_holdtime` or `!hm_holdtime` | `0.0` | `1.0` | `0.3` | Allows you to change the display time of the hitmarker on the screen. | Usage: `.hm_holdtime or /hm_holdtime or !hm_holdtime <time>.` Example: `!hm_holdtime 0.3` |
 | `.hm_fadetime`, `/hm_fadetime` or `!hm_fadetime` | `0.0` | `1.0` | `0.1` | Allows you to change the fade time of the hitmarker. | Usage: `.hm_fadetime or /hm_fadetime or !hm_fadetime <time>.` Example: `!hm_fadetime 0.1` |
+| `.hm_screenfadetime`, `/hm_screenfadetime` or `!hm_screenfadetime` | `0.0` | `1.0` | `0.3` | Allows you to specify the screen fade time. | Usage: `.hm_screenfadetime or /hm_screenfadetime or !hm_screenfadetime <time>.` Example: `!hm_screenfadetime 0.3` |
+| `.hm_screenholdtime`, `/hm_screenholdtime` or `!hm_screenholdtime` | `0.0` | `1.0` | `0.3` | Allows you to specify the color hold time on the screen. | Usage: `.hm_screenholdtime or /hm_screenholdtime or !hm_screenholdtime <time>.` Example: `!hm_screenholdtime 0.3` |
+| `.hm_screencolor`, `/hm_screencolor` or `!hm_screencolor` | `0 0 0 0` | `255 255 255 255` | `25 0 205 55` | Allows you to specify the color of the screen when killing an enemy. | Usage: `.hm_screencolor or /hm_screencolor or !hm_screencolor <red> <green> <blue> <alpha>.` Example: `!hm_screencolor 25 0 205 55` |
 | `.hm_hcolor`, `/hm_hcolor` or `!hm_hcolor` | `0 0 0 0` | `255 255 255 255` | `255 255 255 125` | Allows you to change the color when hitting an enemy. | Usage: `.hm_hcolor or /hm_hcolor or !hm_hcolor <red> <green> <blue> <alpha>.` Example: `!hm_hcolor 255 255 255 125` |
 | `.hm_kcolor`, `/hm_kcolor` or `!hm_kcolor` | `0 0 0 0` | `255 255 255 255` | `255 0 0 125` | Allows you to change the color when killing an enemy. | Usage: `.hm_kcolor or /hm_kcolor or !hm_kcolor <red> <green> <blue> <alpha>.` Example: `!hm_kcolor 255 0 0 125` |
 | `.hm_ao`, `/hm_ao` or `!hm_ao` | `0` | `1` | `0` | Allows you to enable this feature only for admins or for all players. (`AdminsOnly`)<br>`0 - For everyone;`<br>`1 - Admins only.` | Usage: `.hm_ao or /hm_ao or !hm_ao <adminsonly>.` Example: `!hm_ao 0` |
@@ -40,7 +43,10 @@ When you start the game and connect to your server, you will have the following 
 **REMEMBER**: The hitmarker only works when you fire a weapon or attack with a melee weapon (does not work on grenades).<br>
 
 # GIF
-![GIF1](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Hitmarker.gif)
+* No Screen Fade (`!hm_screencolor 0 0 0 0`)<br><br>
+![GIF1](https://github.com/kekekekkek/Hitmarker/blob/main/Images/Hitmarker.gif)<br><br>
+* Screen Fade (`!hm_screencolor 25 0 205 55`)<br><br>
+![GIF2](https://github.com/kekekekkek/Hitmarker/blob/main/Images/ScreenFade.gif)
 
 # Screenshots
 * Screenshot 1<br><br>
